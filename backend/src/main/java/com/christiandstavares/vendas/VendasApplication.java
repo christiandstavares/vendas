@@ -2,10 +2,15 @@ package com.christiandstavares.vendas;
 
 import com.christiandstavares.vendas.entity.Categoria;
 import com.christiandstavares.vendas.entity.Cidade;
+import com.christiandstavares.vendas.entity.Cliente;
+import com.christiandstavares.vendas.entity.Endereco;
 import com.christiandstavares.vendas.entity.Estado;
 import com.christiandstavares.vendas.entity.Produto;
+import com.christiandstavares.vendas.enums.TipoCliente;
 import com.christiandstavares.vendas.service.CategoriaService;
 import com.christiandstavares.vendas.service.CidadeService;
+import com.christiandstavares.vendas.service.ClienteService;
+import com.christiandstavares.vendas.service.EnderecoService;
 import com.christiandstavares.vendas.service.EstadoService;
 import com.christiandstavares.vendas.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +35,12 @@ public class VendasApplication implements CommandLineRunner {
 
     @Autowired
     private CidadeService cidadeService;
+
+    @Autowired
+    private EnderecoService enderecoService;
+
+    @Autowired
+    private ClienteService clienteService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(VendasApplication.class, args);
@@ -67,5 +78,17 @@ public class VendasApplication implements CommandLineRunner {
 
         estadoService.salvarLista(Arrays.asList(est1, est2));
         cidadeService.salvarLista(Arrays.asList(c1, c2, c3));
+
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA);
+
+        cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+        Endereco e1 = new Endereco(null, "38220834", "Jardim", "Rua Flores", "300", "Apto 303", cli1, c1);
+        Endereco e2 = new Endereco(null, "38777012", "Centro", "Avenida Matos", "105", "Sala 800", cli1, c2);
+
+        cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+        clienteService.salvarLista(Collections.singletonList(cli1));
+        enderecoService.salvarLista(Arrays.asList(e1, e2));
 	}
 }
