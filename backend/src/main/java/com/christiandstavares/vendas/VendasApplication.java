@@ -5,19 +5,27 @@ import com.christiandstavares.vendas.entity.Cidade;
 import com.christiandstavares.vendas.entity.Cliente;
 import com.christiandstavares.vendas.entity.Endereco;
 import com.christiandstavares.vendas.entity.Estado;
+import com.christiandstavares.vendas.entity.Pagamento;
+import com.christiandstavares.vendas.entity.PagamentoBoleto;
+import com.christiandstavares.vendas.entity.PagamentoCartao;
+import com.christiandstavares.vendas.entity.Pedido;
 import com.christiandstavares.vendas.entity.Produto;
+import com.christiandstavares.vendas.enums.EstadoPagamento;
 import com.christiandstavares.vendas.enums.TipoCliente;
 import com.christiandstavares.vendas.service.CategoriaService;
 import com.christiandstavares.vendas.service.CidadeService;
 import com.christiandstavares.vendas.service.ClienteService;
 import com.christiandstavares.vendas.service.EnderecoService;
 import com.christiandstavares.vendas.service.EstadoService;
+import com.christiandstavares.vendas.service.PagamentoService;
+import com.christiandstavares.vendas.service.PedidoService;
 import com.christiandstavares.vendas.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -41,6 +49,12 @@ public class VendasApplication implements CommandLineRunner {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private PedidoService pedidoService;
+
+    @Autowired
+    private PagamentoService pagamentoService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(VendasApplication.class, args);
@@ -90,5 +104,21 @@ public class VendasApplication implements CommandLineRunner {
 
         clienteService.salvarLista(Collections.singletonList(cli1));
         enderecoService.salvarLista(Arrays.asList(e1, e2));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+        Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+
+        Pagamento pagto1 = new PagamentoCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+        Pagamento pagto2 = new PagamentoBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+
+        ped1.setPagamento(pagto1);
+        ped2.setPagamento(pagto2);
+
+        cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+
+        pedidoService.salvarLista(Arrays.asList(ped1, ped2));
+        pagamentoService.salvarLista(Arrays.asList(pagto1, pagto2));
 	}
 }
