@@ -1,6 +1,7 @@
 package com.christiandstavares.vendas.entity;
 
 import com.christiandstavares.vendas.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,6 +20,7 @@ public abstract class Pagamento implements Serializable {
     private Long id;
     private Integer estado;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId

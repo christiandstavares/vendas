@@ -5,6 +5,7 @@ import com.christiandstavares.vendas.entity.Cidade;
 import com.christiandstavares.vendas.entity.Cliente;
 import com.christiandstavares.vendas.entity.Endereco;
 import com.christiandstavares.vendas.entity.Estado;
+import com.christiandstavares.vendas.entity.ItemPedido;
 import com.christiandstavares.vendas.entity.Pagamento;
 import com.christiandstavares.vendas.entity.PagamentoBoleto;
 import com.christiandstavares.vendas.entity.PagamentoCartao;
@@ -17,6 +18,7 @@ import com.christiandstavares.vendas.service.CidadeService;
 import com.christiandstavares.vendas.service.ClienteService;
 import com.christiandstavares.vendas.service.EnderecoService;
 import com.christiandstavares.vendas.service.EstadoService;
+import com.christiandstavares.vendas.service.ItemPedidoService;
 import com.christiandstavares.vendas.service.PagamentoService;
 import com.christiandstavares.vendas.service.PedidoService;
 import com.christiandstavares.vendas.service.ProdutoService;
@@ -25,6 +27,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,6 +58,9 @@ public class VendasApplication implements CommandLineRunner {
 
     @Autowired
     private PagamentoService pagamentoService;
+
+    @Autowired
+    private ItemPedidoService itemPedidoService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(VendasApplication.class, args);
@@ -120,5 +126,18 @@ public class VendasApplication implements CommandLineRunner {
 
         pedidoService.salvarLista(Arrays.asList(ped1, ped2));
         pagamentoService.salvarLista(Arrays.asList(pagto1, pagto2));
+
+        ItemPedido ip1 = new ItemPedido(ped1, produto1, 1, 2000.0, 0.0);
+        ItemPedido ip2 = new ItemPedido(ped1, produto3, 2, 80.0, 0.0);
+        ItemPedido ip3 = new ItemPedido(ped2, produto2, 1, 800.0, 100.0);
+
+        ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+        ped2.getItens().addAll(Collections.singletonList(ip3));
+
+        produto1.getItens().addAll(Collections.singletonList(ip1));
+        produto2.getItens().addAll(Collections.singletonList(ip3));
+        produto3.getItens().addAll(Collections.singletonList(ip2));
+
+        itemPedidoService.salvarLista(Arrays.asList(ip1, ip2, ip3));
 	}
 }
