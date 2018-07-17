@@ -8,6 +8,9 @@ import com.christiandstavares.vendas.exception.ObjectNotFoundException;
 import com.christiandstavares.vendas.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +26,15 @@ public class CategoriaService {
     public List<CategoriaDTO> buscarTodos() {
         List<Categoria> categorias = categoriaRepository.findAll();
 
-        return categorias.stream().map(categoria -> CategoriaParser.toDTO(categoria)).collect(Collectors.toList());
+        return categorias.stream().map(CategoriaParser::toDTO).collect(Collectors.toList());
+    }
+
+    public Page<CategoriaDTO> buscarComPaginacao(Integer pagina, Integer itensPorPagina, String direcao, String ordenacao) {
+        PageRequest pageRequest = PageRequest.of(pagina, itensPorPagina, Sort.Direction.valueOf(direcao), ordenacao);
+
+        Page<Categoria> categorias = categoriaRepository.findAll(pageRequest);
+
+        return categorias.map(CategoriaParser::toDTO);
     }
 
     public Categoria buscarPorId(Long id) {
@@ -39,12 +50,19 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
-    public Categoria editar(Long id, Categoria categoria) {
+    public CategoriaDTO cadastrar(CategoriaDTO categoriaDTO) {
+        Categoria categoria = CategoriaParser.toEntity(categoriaDTO);
+
+        return CategoriaParser.toDTO(salvar(categoria));
+    }
+
+    public CategoriaDTO editar(Long id, CategoriaDTO categoriaDTO) {
         buscarPorId(id);
 
+        Categoria categoria = CategoriaParser.toEntity(categoriaDTO);
         categoria.setId(id);
 
-        return salvar(categoria);
+        return CategoriaParser.toDTO(salvar(categoria));
     }
 
     public void excluir(Long id) {

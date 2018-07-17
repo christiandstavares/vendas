@@ -8,4 +8,8 @@ public class CategoriaParser {
     public static CategoriaDTO toDTO(Categoria entity) {
         return new CategoriaDTO(entity.getId(), entity.getNome());
     }
+
+    public static Categoria toEntity(CategoriaDTO dto) {
+        return new Categoria(dto.getId(), dto.getNome());
+    }
 }

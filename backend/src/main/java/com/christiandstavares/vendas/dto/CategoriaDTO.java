@@ -1,10 +1,15 @@
 package com.christiandstavares.vendas.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 public class CategoriaDTO implements Serializable {
 
     private Long id;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
+    @Size(min = 5, max = 80, message = "O tamanho deve ser entre 5 e 80 caracteres")
     private String nome;
 
     public CategoriaDTO() {
