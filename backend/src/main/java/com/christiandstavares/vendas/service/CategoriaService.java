@@ -23,6 +23,11 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    public Categoria buscarPorId(Long id) {
+        Optional<Categoria> categoria = categoriaRepository.findById(id);
+        return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Classe: " + Categoria.class.getName()));
+    }
+
     public List<CategoriaDTO> buscarTodos() {
         List<Categoria> categorias = categoriaRepository.findAll();
 
@@ -35,11 +40,6 @@ public class CategoriaService {
         Page<Categoria> categorias = categoriaRepository.findAll(pageRequest);
 
         return categorias.map(CategoriaParser::toDTO);
-    }
-
-    public Categoria buscarPorId(Long id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
-        return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Classe: " + Categoria.class.getName()));
     }
 
     public List<Categoria> salvarLista(List<Categoria> categorias) {

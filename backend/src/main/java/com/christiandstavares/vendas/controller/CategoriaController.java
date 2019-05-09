@@ -28,6 +28,13 @@ public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
 
+    @GetMapping(value = "{id}")
+    public ResponseEntity<Categoria> buscarPorId(@PathVariable Long id) {
+        Categoria categoria = categoriaService.buscarPorId(id);
+
+        return ResponseEntity.ok(categoria);
+    }
+
     @GetMapping
     public ResponseEntity<List<CategoriaDTO>> buscarTodos() {
         List<CategoriaDTO> categoriaDTOList = categoriaService.buscarTodos();
@@ -44,13 +51,6 @@ public class CategoriaController {
         Page<CategoriaDTO> categoriaDTOPage = categoriaService.buscarComPaginacao(pagina, itensPorPagina, direcao, ordenacao);
 
         return ResponseEntity.ok(categoriaDTOPage);
-    }
-
-    @GetMapping(value = "{id}")
-    public ResponseEntity<Categoria> buscarPorId(@PathVariable Long id) {
-        Categoria categoria = categoriaService.buscarPorId(id);
-
-        return ResponseEntity.ok(categoria);
     }
 
     @PostMapping
