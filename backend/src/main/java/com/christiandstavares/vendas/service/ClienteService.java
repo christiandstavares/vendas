@@ -1,6 +1,7 @@
 package com.christiandstavares.vendas.service;
 
 import com.christiandstavares.vendas.dto.ClienteDTO;
+import com.christiandstavares.vendas.dto.NovoClienteDTO;
 import com.christiandstavares.vendas.entity.Cliente;
 import com.christiandstavares.vendas.exception.IntegridadeDadoVioladaException;
 import com.christiandstavares.vendas.exception.ObjectNotFoundException;
@@ -22,6 +23,9 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private EnderecoService enderecoService;
+
     public Cliente buscarPorId(Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         return cliente.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Classe: " + Cliente.class.getName()));
@@ -42,6 +46,15 @@ public class ClienteService {
         Page<Cliente> clientes = clienteRepository.findAll(pageRequest);
 
         return clientes.map(c -> new ClienteDTO(c));
+    }
+
+    public ClienteDTO cadastrar(NovoClienteDTO novoClienteDTO) {
+        Cliente cliente = novoClienteDTO.toEntity();
+
+        salvar(cliente);
+        enderecoService.salvarLista(cliente.getEnderecos());
+
+        return new ClienteDTO(cliente);
     }
 
     public ClienteDTO editar(Long id, ClienteDTO clienteDTO) {
