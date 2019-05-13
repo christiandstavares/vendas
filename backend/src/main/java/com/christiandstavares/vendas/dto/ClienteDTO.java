@@ -1,12 +1,14 @@
 package com.christiandstavares.vendas.dto;
 
 import com.christiandstavares.vendas.entity.Cliente;
+import com.christiandstavares.vendas.validation.EdicaoCliente;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+@EdicaoCliente
 public class ClienteDTO implements Serializable {
 
     private Long id;

@@ -86,4 +86,8 @@ public class ClienteService {
         cliente.setNome(clienteDTO.getNome());
         cliente.setEmail(clienteDTO.getEmail());
     }
+
+    public Cliente buscarPorEmail(String email) {
+        return clienteRepository.findByEmail(email);
+    }
 }
