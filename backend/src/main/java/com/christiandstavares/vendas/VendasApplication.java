@@ -80,16 +80,37 @@ public class VendasApplication implements CommandLineRunner {
         Produto produto1 = new Produto(null, "Computador", 2000.00);
         Produto produto2 = new Produto(null, "Impressora", 800.00);
         Produto produto3 = new Produto(null, "Mouse", 80.00);
+        Produto produto4 = new Produto(null, "Mesa de escritório", 300.00);
+        Produto produto5 = new Produto(null, "Toalha", 50.00);
+        Produto produto6 = new Produto(null, "Colcha", 200.00);
+        Produto produto7 = new Produto(null, "TV true color", 1200.00);
+        Produto produto8 = new Produto(null, "Roçadeira", 800.00);
+        Produto produto9 = new Produto(null, "Abajour", 100.00);
+        Produto produto10 = new Produto(null, "Pendente", 180.00);
+        Produto produto11 = new Produto(null, "Shampoo", 90.00);
 
         categoria1.setProdutos(Arrays.asList(produto1, produto2, produto3));
-        categoria2.setProdutos(Collections.singletonList(produto2));
+        categoria2.setProdutos(Arrays.asList(produto2, produto4));
+        categoria3.setProdutos(Arrays.asList(produto5, produto6));
+        categoria4.setProdutos(Arrays.asList(produto1, produto2, produto3, produto7));
+        categoria5.setProdutos(Arrays.asList(produto8));
+        categoria6.setProdutos(Arrays.asList(produto9, produto10));
+        categoria7.setProdutos(Arrays.asList(produto11));
 
-        produto1.setCategorias(Collections.singletonList(categoria1));
-        produto2.setCategorias(Arrays.asList(categoria1, categoria2));
-        produto3.setCategorias(Collections.singletonList(categoria1));
+        produto1.setCategorias(Arrays.asList(categoria1, categoria4));
+        produto2.setCategorias(Arrays.asList(categoria1, categoria2, categoria4));
+        produto3.setCategorias(Arrays.asList(categoria1, categoria4));
+        produto4.setCategorias(Arrays.asList(categoria2));
+        produto5.setCategorias(Arrays.asList(categoria3));
+        produto6.setCategorias(Arrays.asList(categoria3));
+        produto7.setCategorias(Arrays.asList(categoria4));
+        produto8.setCategorias(Arrays.asList(categoria5));
+        produto9.setCategorias(Arrays.asList(categoria6));
+        produto10.setCategorias(Arrays.asList(categoria6));
+        produto11.setCategorias(Arrays.asList(categoria7));
 
 		categoriaService.salvarLista(Arrays.asList(categoria1, categoria2, categoria3, categoria4, categoria5, categoria6, categoria7));
-		produtoService.salvarLista(Arrays.asList(produto1, produto2, produto3));
+		produtoService.salvarLista(Arrays.asList(produto1, produto2, produto3, produto4, produto5, produto6, produto7, produto8, produto9, produto10, produto11));
 
         Estado est1 = new Estado(null, "Minas Gerais");
         Estado est2 = new Estado(null, "São Paulo");

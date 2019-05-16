@@ -87,6 +87,7 @@ public class ClienteService {
         cliente.setEmail(clienteDTO.getEmail());
     }
 
+    @Transactional(readOnly = true)
     public Cliente buscarPorEmail(String email) {
         return clienteRepository.findByEmail(email);
     }
