@@ -16,4 +16,8 @@ public class PagamentoService {
     public List<Pagamento> salvarLista(List<Pagamento> pagamentos) {
         return pagamentoRepository.saveAll(pagamentos);
     }
+
+    public Pagamento salvar(Pagamento pagamento) {
+        return pagamentoRepository.save(pagamento);
+    }
 }

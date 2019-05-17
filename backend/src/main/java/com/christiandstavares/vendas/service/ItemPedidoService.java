@@ -5,6 +5,7 @@ import com.christiandstavares.vendas.repository.ItemPedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -13,7 +14,7 @@ public class ItemPedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
-    public List<ItemPedido> salvarLista(List<ItemPedido> itens) {
+    public List<ItemPedido> salvarLista(Collection<ItemPedido> itens) {
         return itemPedidoRepository.saveAll(itens);
     }
 }

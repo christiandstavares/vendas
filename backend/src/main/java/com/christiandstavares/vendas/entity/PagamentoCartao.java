@@ -1,10 +1,12 @@
 package com.christiandstavares.vendas.entity;
 
 import com.christiandstavares.vendas.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Entity;
 
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoCartao extends Pagamento {
 
     private Integer numeroParcelas;
