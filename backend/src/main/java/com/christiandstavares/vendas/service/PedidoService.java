@@ -30,6 +30,9 @@ public class PedidoService {
     @Autowired
     private ItemPedidoService itemPedidoService;
 
+    @Autowired
+    private ClienteService clienteService;
+
     public Pedido buscarPorId(Long id) {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
         return pedido.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Classe: " + Pedido.class.getName()));
@@ -42,6 +45,7 @@ public class PedidoService {
     public Pedido cadastrar(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstante(new Date());
+        pedido.setCliente(clienteService.buscarPorId(pedido.getCliente().getId()));
         pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
 
@@ -59,12 +63,14 @@ public class PedidoService {
 
         for (ItemPedido itemPedido : pedido.getItens()) {
             itemPedido.setDesconto(0.0);
-            itemPedido.setPreco(produtoService.buscarPorId(itemPedido.getProduto().getId()).getPreco());
+            itemPedido.setProduto(produtoService.buscarPorId(itemPedido.getProduto().getId()));
+            itemPedido.setPreco(itemPedido.getProduto().getPreco());
             itemPedido.setPedido(pedido);
         }
 
         itemPedidoService.salvarLista(pedido.getItens());
 
+        System.out.print(pedido.toString());
         return pedido;
     }
 }
