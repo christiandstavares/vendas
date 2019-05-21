@@ -1,6 +1,8 @@
 package com.christiandstavares.vendas.config;
 
 import com.christiandstavares.vendas.service.DBService;
+import com.christiandstavares.vendas.service.EmailService;
+import com.christiandstavares.vendas.service.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,5 +21,10 @@ public class TestConfig {
     public boolean instantiateDatabase() throws ParseException {
         dbService.instantiateTestDatabase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new MockEmailService();
     }
 }

@@ -8,6 +8,7 @@ import com.christiandstavares.vendas.exception.ObjectNotFoundException;
 import com.christiandstavares.vendas.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -33,6 +34,9 @@ public class PedidoService {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private EmailService emailService;
+
     public Pedido buscarPorId(Long id) {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
         return pedido.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Classe: " + Pedido.class.getName()));
@@ -42,6 +46,7 @@ public class PedidoService {
         return pedidoRepository.saveAll(pedidos);
     }
 
+    @Transactional
     public Pedido cadastrar(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstante(new Date());
@@ -70,7 +75,7 @@ public class PedidoService {
 
         itemPedidoService.salvarLista(pedido.getItens());
 
-        System.out.print(pedido.toString());
+        emailService.enviarEmailDeConfirmacaoDePedido(pedido);
         return pedido;
     }
 }
