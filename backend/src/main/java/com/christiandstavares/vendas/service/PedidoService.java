@@ -75,7 +75,7 @@ public class PedidoService {
 
         itemPedidoService.salvarLista(pedido.getItens());
 
-        emailService.enviarEmailDeConfirmacaoDePedido(pedido);
+        emailService.enviarEmailHtmlDeConfirmacaoDePedido(pedido);
         return pedido;
     }
 }
