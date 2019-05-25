@@ -4,6 +4,7 @@ import com.christiandstavares.vendas.entity.*;
 import com.christiandstavares.vendas.enums.EstadoPagamento;
 import com.christiandstavares.vendas.enums.TipoCliente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -40,6 +41,9 @@ public class DBService {
 
     @Autowired
     private ItemPedidoService itemPedidoService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void instantiateTestDatabase() throws ParseException {
         Categoria categoria1 = new Categoria(null, "Informática");
@@ -98,7 +102,7 @@ public class DBService {
         estadoService.salvarLista(Arrays.asList(est1, est2));
         cidadeService.salvarLista(Arrays.asList(c1, c2, c3));
 
-        Cliente cli1 = new Cliente(null, "Maria Silva", "christiandstavares@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA);
+        Cliente cli1 = new Cliente(null, "Maria Silva", "christiandstavares@gmail.com", bCryptPasswordEncoder.encode("123"), "36378912377", TipoCliente.PESSOA_FISICA);
 
         cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 

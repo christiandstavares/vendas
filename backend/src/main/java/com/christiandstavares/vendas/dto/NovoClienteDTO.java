@@ -5,6 +5,7 @@ import com.christiandstavares.vendas.entity.Cliente;
 import com.christiandstavares.vendas.entity.Endereco;
 import com.christiandstavares.vendas.enums.TipoCliente;
 import com.christiandstavares.vendas.validation.CadastroCliente;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -22,6 +23,9 @@ public class NovoClienteDTO implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     @Email
     private String email;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
+    private String senha;
 
     @NotEmpty(message = "Preenchimento obrigatório")
     private String cpfOuCnpj;
@@ -67,6 +71,14 @@ public class NovoClienteDTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getCpfOuCnpj() {
@@ -158,7 +170,8 @@ public class NovoClienteDTO implements Serializable {
     }
 
     public Cliente toEntity() {
-        Cliente cliente = new Cliente(null, getNome(), getEmail(), getCpfOuCnpj(), TipoCliente.toEnum(getTipo()));
+        String senha = new BCryptPasswordEncoder().encode(getSenha());
+        Cliente cliente = new Cliente(null, getNome(), getEmail(), senha, getCpfOuCnpj(), TipoCliente.toEnum(getTipo()));
         Cidade cidade = new Cidade(getIdCidade(), null, null);
         Endereco endereco = new Endereco(null, getCep(), getBairro(), getLogradouro(), getNumero(), getComplemento(), cliente, cidade);
 
