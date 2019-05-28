@@ -2,6 +2,7 @@ package com.christiandstavares.vendas.service;
 
 import com.christiandstavares.vendas.entity.*;
 import com.christiandstavares.vendas.enums.EstadoPagamento;
+import com.christiandstavares.vendas.enums.Perfil;
 import com.christiandstavares.vendas.enums.TipoCliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -103,16 +104,22 @@ public class DBService {
         cidadeService.salvarLista(Arrays.asList(c1, c2, c3));
 
         Cliente cli1 = new Cliente(null, "Maria Silva", "christiandstavares@gmail.com", bCryptPasswordEncoder.encode("123"), "36378912377", TipoCliente.PESSOA_FISICA);
+        Cliente cli2 = new Cliente(null, "Ana Costa", "christiandstavares@hotmail.com", bCryptPasswordEncoder.encode("123"), "04260284061", TipoCliente.PESSOA_FISICA);
+
+        cli2.addPerfil(Perfil.ADMIN);
 
         cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+        cli2.getTelefones().addAll(Arrays.asList("33398574", "91658472"));
 
         Endereco e1 = new Endereco(null, "38220834", "Jardim", "Rua Flores", "300", "Apto 303", cli1, c1);
         Endereco e2 = new Endereco(null, "38777012", "Centro", "Avenida Matos", "105", "Sala 800", cli1, c2);
+        Endereco e3 = new Endereco(null, "72586023", "Centro", "Avenida Jardim", "60", "Apto 201", cli2, c2);
 
         cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+        cli2.getEnderecos().addAll(Arrays.asList(e3));
 
-        clienteService.salvarLista(Collections.singletonList(cli1));
-        enderecoService.salvarLista(Arrays.asList(e1, e2));
+        clienteService.salvarLista(Arrays.asList(cli1, cli2));
+        enderecoService.salvarLista(Arrays.asList(e1, e2, e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
