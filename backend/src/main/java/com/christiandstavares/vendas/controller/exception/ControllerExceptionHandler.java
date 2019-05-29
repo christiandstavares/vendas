@@ -1,5 +1,6 @@
 package com.christiandstavares.vendas.controller.exception;
 
+import com.christiandstavares.vendas.exception.AutorizacaoException;
 import com.christiandstavares.vendas.exception.IntegridadeDadoVioladaException;
 import com.christiandstavares.vendas.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -38,5 +39,12 @@ public class ControllerExceptionHandler {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(AutorizacaoException.class)
+    public ResponseEntity<StandardError> autorizacao(AutorizacaoException e, HttpServletRequest request) {
+
+        StandardError error = new StandardError(HttpStatus.FORBIDDEN.toString(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 }

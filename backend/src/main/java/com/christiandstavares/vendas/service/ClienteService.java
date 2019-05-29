@@ -3,9 +3,12 @@ package com.christiandstavares.vendas.service;
 import com.christiandstavares.vendas.dto.ClienteDTO;
 import com.christiandstavares.vendas.dto.NovoClienteDTO;
 import com.christiandstavares.vendas.entity.Cliente;
+import com.christiandstavares.vendas.enums.Perfil;
+import com.christiandstavares.vendas.exception.AutorizacaoException;
 import com.christiandstavares.vendas.exception.IntegridadeDadoVioladaException;
 import com.christiandstavares.vendas.exception.ObjectNotFoundException;
 import com.christiandstavares.vendas.repository.ClienteRepository;
+import com.christiandstavares.vendas.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -28,7 +31,14 @@ public class ClienteService {
     private EnderecoService enderecoService;
 
     public Cliente buscarPorId(Long id) {
+        UserSS user = UsuarioService.usuarioLogado();
+
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw new AutorizacaoException("Acesso negado");
+        }
+
         Optional<Cliente> cliente = clienteRepository.findById(id);
+
         return cliente.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Classe: " + Cliente.class.getName()));
     }
 

@@ -1,12 +1,18 @@
 package com.christiandstavares.vendas.service;
 
+import com.christiandstavares.vendas.entity.Cliente;
 import com.christiandstavares.vendas.entity.ItemPedido;
 import com.christiandstavares.vendas.entity.PagamentoBoleto;
 import com.christiandstavares.vendas.entity.Pedido;
 import com.christiandstavares.vendas.enums.EstadoPagamento;
+import com.christiandstavares.vendas.exception.AutorizacaoException;
 import com.christiandstavares.vendas.exception.ObjectNotFoundException;
 import com.christiandstavares.vendas.repository.PedidoRepository;
+import com.christiandstavares.vendas.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,5 +83,17 @@ public class PedidoService {
 
         emailService.enviarEmailHtmlDeConfirmacaoDePedido(pedido);
         return pedido;
+    }
+
+    public Page<Pedido> buscarPorCliente(Integer pagina, Integer itensPorPagina, String direcao, String ordenacao) {
+        UserSS user = UsuarioService.usuarioLogado();
+        if (user == null) {
+            throw new AutorizacaoException("Acesso negado");
+        }
+
+        PageRequest pageRequest = PageRequest.of(pagina, itensPorPagina, Sort.Direction.valueOf(direcao), ordenacao);
+        Cliente cliente =  clienteService.buscarPorId(user.getId());
+
+        return pedidoRepository.findAllByCliente(cliente, pageRequest);
     }
 }
