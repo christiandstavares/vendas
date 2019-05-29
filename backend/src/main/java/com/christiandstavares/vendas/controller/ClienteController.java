@@ -7,6 +7,7 @@ import com.christiandstavares.vendas.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,6 +30,7 @@ public class ClienteController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<ClienteDTO>> buscarTodos() {
         List<ClienteDTO> clienteDTOList = clienteService.buscarTodos();
 
@@ -36,6 +38,7 @@ public class ClienteController {
     }
 
     @GetMapping(value = "paginacao")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Page<ClienteDTO>> buscarComPaginacao(
             @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
             @RequestParam(value = "itensPorPagina", defaultValue = "10") Integer itensPorPagina,
@@ -63,6 +66,7 @@ public class ClienteController {
     }
 
     @DeleteMapping(value = "{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         clienteService.excluir(id);
 

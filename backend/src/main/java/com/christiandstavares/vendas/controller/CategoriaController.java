@@ -6,6 +6,7 @@ import com.christiandstavares.vendas.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,7 @@ public class CategoriaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> cadastrar(@Valid @RequestBody CategoriaDTO categoria) {
         CategoriaDTO novaCategoria = categoriaService.cadastrar(categoria);
 
@@ -63,6 +65,7 @@ public class CategoriaController {
     }
 
     @PutMapping(value = "{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> editar(@PathVariable Long id, @Valid @RequestBody CategoriaDTO categoria) {
         categoriaService.editar(id, categoria);
 
@@ -70,6 +73,7 @@ public class CategoriaController {
     }
 
     @DeleteMapping(value = "{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         categoriaService.excluir(id);
 
