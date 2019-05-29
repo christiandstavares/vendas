@@ -1,5 +1,6 @@
 package com.christiandstavares.vendas.service;
 
+import com.christiandstavares.vendas.entity.Cliente;
 import com.christiandstavares.vendas.entity.Pedido;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -14,4 +15,6 @@ public interface EmailService {
     void enviarEmailHtmlDeConfirmacaoDePedido(Pedido pedido);
 
     void enviarEmailHtml(MimeMessage mimeMessage);
+
+    void enviarEmailDeNovaSenha(Cliente cliente, String novaSenha);
 }

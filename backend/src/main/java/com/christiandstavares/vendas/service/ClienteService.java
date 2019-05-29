@@ -88,7 +88,7 @@ public class ClienteService {
         }
     }
 
-    private Cliente salvar(Cliente cliente) {
+    public Cliente salvar(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
 

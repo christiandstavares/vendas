@@ -1,5 +1,6 @@
 package com.christiandstavares.vendas.service;
 
+import com.christiandstavares.vendas.entity.Cliente;
 import com.christiandstavares.vendas.entity.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,5 +71,21 @@ public abstract class AbstractEmailService implements EmailService {
         context.setVariable("pedido", pedido);
 
         return templateEngine.process("email/confirmacaoPedido", context);
+    }
+
+    @Override
+    public void enviarEmailDeNovaSenha(Cliente cliente, String novaSenha) {
+        SimpleMailMessage message = prepareNewPasswordEmail(cliente, novaSenha);
+        enviarEmail(message);
+    }
+
+    protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String novaSenha) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(cliente.getEmail());
+        message.setFrom(sender);
+        message.setSubject("Solicitação de nova senha");
+        message.setSentDate(new Date(System.currentTimeMillis()));
+        message.setText("Nova senha: " + novaSenha);
+        return message;
     }
 }
