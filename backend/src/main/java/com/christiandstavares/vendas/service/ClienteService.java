@@ -1,5 +1,6 @@
 package com.christiandstavares.vendas.service;
 
+import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.christiandstavares.vendas.dto.ClienteDTO;
 import com.christiandstavares.vendas.dto.NovoClienteDTO;
 import com.christiandstavares.vendas.entity.Cliente;
@@ -16,7 +17,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +32,9 @@ public class ClienteService {
 
     @Autowired
     private EnderecoService enderecoService;
+
+    @Autowired
+    private S3Service s3Service;
 
     public Cliente buscarPorId(Long id) {
         UserSS user = UsuarioService.usuarioLogado();
@@ -100,5 +106,9 @@ public class ClienteService {
     @Transactional(readOnly = true)
     public Cliente buscarPorEmail(String email) {
         return clienteRepository.findByEmail(email);
+    }
+
+    public URI uploadFotoPerfil(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 }
