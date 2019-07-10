@@ -118,6 +118,20 @@ public class ClienteService {
         return clienteRepository.findByEmail(email);
     }
 
+    public Cliente buscarPorEmailSeAutenticado(String email) {
+        UserSS user = UsuarioService.usuarioLogado();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+            throw new AutorizacaoException("Acesso negado");
+        }
+
+        Cliente cliente = clienteRepository.findByEmail(email);
+        if (cliente == null) {
+            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+        }
+
+        return cliente;
+    }
+
     public URI uploadFotoPerfil(MultipartFile multipartFile) {
         UserSS user = UsuarioService.usuarioLogado();
         if (user == null) {

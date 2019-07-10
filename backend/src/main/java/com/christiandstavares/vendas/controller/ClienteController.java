@@ -79,4 +79,10 @@ public class ClienteController {
         URI uri = clienteService.uploadFotoPerfil(multipartFile);
         return ResponseEntity.created(uri).build();
     }
+
+    @GetMapping(value = "por-email")
+    public ResponseEntity<Cliente> buscarPorEmail(@RequestParam(value = "email") String email) {
+        Cliente cliente = clienteService.buscarPorEmailSeAutenticado(email);
+        return ResponseEntity.ok(cliente);
+    }
 }
