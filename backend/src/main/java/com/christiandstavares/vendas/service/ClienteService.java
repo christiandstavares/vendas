@@ -1,6 +1,5 @@
 package com.christiandstavares.vendas.service;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.christiandstavares.vendas.dto.ClienteDTO;
 import com.christiandstavares.vendas.dto.NovoClienteDTO;
 import com.christiandstavares.vendas.entity.Cliente;
@@ -109,6 +108,17 @@ public class ClienteService {
     }
 
     public URI uploadFotoPerfil(MultipartFile multipartFile) {
-        return s3Service.uploadFile(multipartFile);
+        UserSS user = UsuarioService.usuarioLogado();
+        if (user == null) {
+            throw new AutorizacaoException("Acesso negado");
+        }
+
+        URI uri = s3Service.uploadFile(multipartFile);
+        Cliente cliente = clienteRepository.findById(user.getId()).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId() + ", Classe: " + Cliente.class.getName()));
+
+        cliente.setUrlFoto(uri.toString());
+        salvar(cliente);
+
+        return uri;
     }
 }

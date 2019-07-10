@@ -31,6 +31,8 @@ public class Cliente implements Serializable {
 
     private Integer tipo;
 
+    private String urlFoto;
+
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
@@ -106,6 +108,14 @@ public class Cliente implements Serializable {
 
     public void setTipo(TipoCliente tipo) {
         this.tipo = tipo.getCodigo();
+    }
+
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
     }
 
     public List<Endereco> getEnderecos() {

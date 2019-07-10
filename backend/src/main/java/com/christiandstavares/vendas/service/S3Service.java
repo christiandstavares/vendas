@@ -5,6 +5,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.christiandstavares.vendas.exception.ArquivoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class S3Service {
             InputStream inputStream = multipartFile.getInputStream();
             return uploadFile(inputStream, fileName, contentType);
         } catch (IOException e) {
-            throw new RuntimeException("Erro de IO: " + e.getMessage());
+            throw new ArquivoException("Erro de IO: " + e.getMessage());
         }
 
         /*try {
@@ -61,7 +62,7 @@ public class S3Service {
             LOGGER.info("Upload finalizado!");
             return amazonS3.getUrl(bucketName, fileName).toURI();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Erro ao converter URL para URI");
+            throw new ArquivoException("Erro ao converter URL para URI");
         }
     }
 }

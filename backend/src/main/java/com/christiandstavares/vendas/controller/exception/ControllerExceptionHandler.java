@@ -1,5 +1,9 @@
 package com.christiandstavares.vendas.controller.exception;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.christiandstavares.vendas.exception.ArquivoException;
 import com.christiandstavares.vendas.exception.AutorizacaoException;
 import com.christiandstavares.vendas.exception.IntegridadeDadoVioladaException;
 import com.christiandstavares.vendas.exception.ObjectNotFoundException;
@@ -46,5 +50,34 @@ public class ControllerExceptionHandler {
 
         StandardError error = new StandardError(HttpStatus.FORBIDDEN.toString(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
+    @ExceptionHandler(ArquivoException.class)
+    public ResponseEntity<StandardError> arquivo(ArquivoException e, HttpServletRequest request) {
+
+        StandardError error = new StandardError(HttpStatus.BAD_REQUEST.toString(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(AmazonServiceException.class)
+    public ResponseEntity<StandardError> amazonService(AmazonServiceException e, HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.valueOf(e.getErrorCode());
+        StandardError error = new StandardError(status.toString(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(AmazonClientException.class)
+    public ResponseEntity<StandardError> amazonClient(AmazonClientException e, HttpServletRequest request) {
+
+        StandardError error = new StandardError(HttpStatus.BAD_REQUEST.toString(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(AmazonS3Exception.class)
+    public ResponseEntity<StandardError> amazonS3(AmazonS3Exception e, HttpServletRequest request) {
+
+        StandardError error = new StandardError(HttpStatus.BAD_REQUEST.toString(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
