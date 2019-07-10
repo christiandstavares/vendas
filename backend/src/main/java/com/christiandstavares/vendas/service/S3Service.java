@@ -30,30 +30,7 @@ public class S3Service {
     @Autowired
     private AmazonS3 amazonS3;
 
-    public URI uploadFile(MultipartFile multipartFile) {
-        try {
-            String fileName = multipartFile.getOriginalFilename();
-            String contentType = multipartFile.getContentType();
-            InputStream inputStream = multipartFile.getInputStream();
-            return uploadFile(inputStream, fileName, contentType);
-        } catch (IOException e) {
-            throw new ArquivoException("Erro de IO: " + e.getMessage());
-        }
-
-        /*try {
-            File file = new File(localFilePath);
-            LOGGER.info("Iniciando upload...");
-            amazonS3.putObject(new PutObjectRequest(bucketName, "teste.jpg", file));
-            LOGGER.info("Upload finalizado!");
-        } catch (AmazonServiceException e) {
-            LOGGER.info("AmazonServiceException: " + e.getMessage());
-            LOGGER.info("Status code: " + e.getErrorCode());
-        } catch (AmazonClientException e) {
-            LOGGER.info("AmazonClientException: " + e.getMessage());
-        }*/
-    }
-
-    private URI uploadFile(InputStream inputStream, String fileName, String contentType) {
+    public URI uploadFile(InputStream inputStream, String fileName, String contentType) {
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(contentType);

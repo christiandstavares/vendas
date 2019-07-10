@@ -10,6 +10,7 @@ import com.christiandstavares.vendas.exception.ObjectNotFoundException;
 import com.christiandstavares.vendas.repository.ClienteRepository;
 import com.christiandstavares.vendas.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,15 @@ public class ClienteService {
 
     @Autowired
     private S3Service s3Service;
+
+    @Autowired
+    private ImagemService imagemService;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefixo;
+
+    @Value("${img.profile.size}")
+    private Integer size;
 
     public Cliente buscarPorId(Long id) {
         UserSS user = UsuarioService.usuarioLogado();
@@ -113,12 +124,11 @@ public class ClienteService {
             throw new AutorizacaoException("Acesso negado");
         }
 
-        URI uri = s3Service.uploadFile(multipartFile);
-        Cliente cliente = clienteRepository.findById(user.getId()).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId() + ", Classe: " + Cliente.class.getName()));
+        BufferedImage jpgImage = imagemService.getJpgImageFromFile(multipartFile);
+        jpgImage = imagemService.cropSquare(jpgImage);
+        jpgImage = imagemService.resize(jpgImage, size);
+        String fileName = prefixo + user.getId() + ".jpg";
 
-        cliente.setUrlFoto(uri.toString());
-        salvar(cliente);
-
-        return uri;
+        return s3Service.uploadFile(imagemService.getInputStream(jpgImage, "jpg"), fileName, "image");
     }
 }
