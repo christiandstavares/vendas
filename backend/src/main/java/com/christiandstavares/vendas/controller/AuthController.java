@@ -28,6 +28,7 @@ public class AuthController {
         UserSS user = UsuarioService.usuarioLogado();
         String token = jwtUtils.gerarToken(user.getUsername());
         response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("access-control-expose-headers", "Authorization");
         return ResponseEntity.noContent().build();
     }
 
