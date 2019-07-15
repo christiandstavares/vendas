@@ -5,17 +5,17 @@ import java.util.List;
 
 public class ValidationError extends StandardError {
 
-    private List<CampoMensagem> erros = new ArrayList<>();
+    private List<CampoMensagem> errors = new ArrayList<>();
 
-    public ValidationError(String status, String message, Long timestamp) {
-        super(status, message, timestamp);
+    public ValidationError(Long timestamp, String status, String error, String message, String path) {
+        super(timestamp, status, error, message, path);
     }
 
-    public List<CampoMensagem> getErros() {
-        return erros;
+    public List<CampoMensagem> getErrors() {
+        return errors;
     }
 
-    public void addErro(String campo, String mensagem) {
-        this.erros.add(new CampoMensagem(campo, mensagem));
+    public void addError(String campo, String mensagem) {
+        this.errors.add(new CampoMensagem(campo, mensagem));
     }
 }
