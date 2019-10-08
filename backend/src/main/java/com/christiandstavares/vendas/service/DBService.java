@@ -107,29 +107,9 @@ public class DBService {
         Produto p49 = new Produto(null, "Produto 49", 10.00);
         Produto p50 = new Produto(null, "Produto 50", 10.00);
 
-        categoria1.setProdutos(Arrays.asList(produto1, produto2, produto3));
-        categoria2.setProdutos(Arrays.asList(produto2, produto4));
-        categoria3.setProdutos(Arrays.asList(produto5, produto6));
-        categoria4.setProdutos(Arrays.asList(produto1, produto2, produto3, produto7));
-        categoria5.setProdutos(Arrays.asList(produto8));
-        categoria6.setProdutos(Arrays.asList(produto9, produto10));
-        categoria7.setProdutos(Arrays.asList(produto11));
-
         categoria1.getProdutos().addAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
                 p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38,
                 p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
-
-        produto1.setCategorias(Arrays.asList(categoria1, categoria4));
-        produto2.setCategorias(Arrays.asList(categoria1, categoria2, categoria4));
-        produto3.setCategorias(Arrays.asList(categoria1, categoria4));
-        produto4.setCategorias(Arrays.asList(categoria2));
-        produto5.setCategorias(Arrays.asList(categoria3));
-        produto6.setCategorias(Arrays.asList(categoria3));
-        produto7.setCategorias(Arrays.asList(categoria4));
-        produto8.setCategorias(Arrays.asList(categoria5));
-        produto9.setCategorias(Arrays.asList(categoria6));
-        produto10.setCategorias(Arrays.asList(categoria6));
-        produto11.setCategorias(Arrays.asList(categoria7));
 
         p12.getCategorias().add(categoria1);
         p13.getCategorias().add(categoria1);
@@ -170,6 +150,26 @@ public class DBService {
         p48.getCategorias().add(categoria1);
         p49.getCategorias().add(categoria1);
         p50.getCategorias().add(categoria1);
+
+        categoria1.setProdutos(Arrays.asList(produto1, produto2, produto3));
+        categoria2.setProdutos(Arrays.asList(produto2, produto4));
+        categoria3.setProdutos(Arrays.asList(produto5, produto6));
+        categoria4.setProdutos(Arrays.asList(produto1, produto2, produto3, produto7));
+        categoria5.setProdutos(Arrays.asList(produto8));
+        categoria6.setProdutos(Arrays.asList(produto9, produto10));
+        categoria7.setProdutos(Arrays.asList(produto11));
+
+        produto1.setCategorias(Arrays.asList(categoria1, categoria4));
+        produto2.setCategorias(Arrays.asList(categoria1, categoria2, categoria4));
+        produto3.setCategorias(Arrays.asList(categoria1, categoria4));
+        produto4.setCategorias(Arrays.asList(categoria2));
+        produto5.setCategorias(Arrays.asList(categoria3));
+        produto6.setCategorias(Arrays.asList(categoria3));
+        produto7.setCategorias(Arrays.asList(categoria4));
+        produto8.setCategorias(Arrays.asList(categoria5));
+        produto9.setCategorias(Arrays.asList(categoria6));
+        produto10.setCategorias(Arrays.asList(categoria6));
+        produto11.setCategorias(Arrays.asList(categoria7));
 
         categoriaService.salvarLista(Arrays.asList(categoria1, categoria2, categoria3, categoria4, categoria5, categoria6, categoria7));
         produtoService.salvarLista(Arrays.asList(produto1, produto2, produto3, produto4, produto5, produto6, produto7, produto8, produto9, produto10, produto11));
