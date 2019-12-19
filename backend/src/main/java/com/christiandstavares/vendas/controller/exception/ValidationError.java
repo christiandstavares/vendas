@@ -7,7 +7,7 @@ public class ValidationError extends StandardError {
 
     private List<CampoMensagem> errors = new ArrayList<>();
 
-    public ValidationError(Long timestamp, String status, String error, String message, String path) {
+    public ValidationError(Long timestamp, Integer status, String error, String message, String path) {
         super(timestamp, status, error, message, path);
     }
 
